@@ -1,16 +1,23 @@
 import { Action, Dispatch } from 'redux';
 import { IApp, LoginInfo, AuthInfo } from './../models';
 import uniqid from 'uniqid';
+import { IState } from '.';
 
 export const APP_LIST = 'app/list';
 export const APP_ADD  = 'app/add';
 export const LOGIN = 'login';
 export const APP_REMOVE = 'app/remove';
 export const APP_ADD_VERSION = 'app/add/version';
+export const SELECT_APP = 'app/select';
 
 export interface IActionAppAddVersion extends Action {
   type: 'app/add/version',
   appId: string
+}
+
+export interface IActionSelectApp extends Action {
+  type: 'app/select',
+  app: IApp
 }
 
 export interface IActionAppList extends Action {
@@ -33,9 +40,18 @@ export interface IActionAppRemove extends Action {
   id: string
 }
 
-export type AppAction = IActionAppAdd | IActionAppList | IActionLogin | IActionAppRemove | IActionAppAddVersion;
+export type AppAction = IActionAppAdd 
+  | IActionAppList 
+  | IActionLogin 
+  | IActionAppRemove 
+  | IActionAppAddVersion
+  | IActionSelectApp;
 
-export const addAppVersion = (appId: string) => (dispatch: Dispatch) => dispatch({
+export const selectApp = (id: string) => (dispatch: Dispatch, getState: () => IState) => dispatch({
+  type: SELECT_APP,
+  app: getState().list.find((app: IApp) => app.id === id)
+})
+export const addAppVersion = (appId: string) => (dispatch: Dispatch, getState: () => IState) => dispatch({
   type: APP_ADD_VERSION,
   appId
 })

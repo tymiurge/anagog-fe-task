@@ -60,6 +60,12 @@ export interface IApp {
   versions: Array<IAppVersion>
 };
 
+export class AppModel implements IApp {
+  id: string = '';
+  name: string = '';
+  versions: Array<IAppVersion> = [];
+}
+
 export type LoginInfo = {
   login: string,
   password: string

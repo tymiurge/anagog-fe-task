@@ -3,7 +3,6 @@ import { Button, Form, Segment } from 'semantic-ui-react'
 import { Dialog, TwoColumns, AppUsers, CUDElement, StaticTextField } from './../../components';
 import { User, IApp, IAppVersion } from '../../models';
 import { RouteComponentProps } from 'react-router';
-import { appList } from '../../store/actions';
 
 const options = [
   { key: 'm', text: 'Male', value: 'male' },
@@ -14,7 +13,8 @@ interface IProps extends RouteComponentProps<any> {
   onAppRemove(id: string): void,
   onLoad(id: string): void,
   appList: Array<IApp>,
-  onAppVersionAdd(appId: string): void
+  onAppVersionAdd(appId: string): void,
+  selectedApp: IApp
 }
 
 export default class AppDetails extends React.Component<IProps> {
@@ -26,13 +26,15 @@ export default class AppDetails extends React.Component<IProps> {
     // this.props.onAppRemove(this.props.match.params.id);
   }
   render() {
-    const { appList } = this.props;
-    if (appList.length === 0) return (<div></div>)
-    const selectedApp: IApp = appList.find((app: IApp) => app.id === this.props.match.params.id) as IApp
+    const { appList, selectedApp } = this.props;
+    if (appList.length === 0 || selectedApp.name === '') return (<div></div>)
+    //const selectedApp: IApp = appList.find((app: IApp) => app.id === this.props.match.params.id) as IApp
     return(
       <Dialog
         title={`APP DETAILS: ${selectedApp.name} Application`}
-        controls={(<Button primary>Edit Users</Button>)}
+        controls={(
+          <Button primary onClick={() => this.props.history.push('/app/users')}>Edit Users</Button>
+          )}
       >
         <TwoColumns>
           <Form>

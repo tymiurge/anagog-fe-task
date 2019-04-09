@@ -1,16 +1,18 @@
 import AppDetails from './AppDetails';
 import { IState } from '../../store';
-import { appList, removeApp, addAppVersion } from '../../store/actions';
+import { appList, removeApp, addAppVersion, selectApp } from '../../store/actions';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const stateMapping = (state: IState) => ({
-  appList: state.list
+  appList: state.list,
+  selectedApp: state.selectedApp
 })
 
 const dispatchMapping = (dispatch: any) => ({
   onLoad: (id: string) => {
-    dispatch(appList())
+    dispatch(appList()),
+    dispatch(selectApp(id));
   },
   onAppRemove: (id: string) => {
     dispatch(removeApp(id))
